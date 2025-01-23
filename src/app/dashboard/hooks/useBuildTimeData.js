@@ -4,8 +4,12 @@ import React, { useEffect, useState } from 'react';
 
 const useBuildTimeData = async (username) => {
   // console.log('entering use effect useBuildTimeData for:', username);
+  const baseUrl = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:3000/dashboard/api/build'
+  : 'https://www.nextlevel-dash.com/dashboard/api/build'
+  
   try {
-    const res = await fetch(`https://www.nextlevel-dash.com/dashboard/api/build?username=${username}`);
+    const res = await fetch(`${baseUrl}?username=${username}`);
     // const res = await fetch(`http://localhost:3000/dashboard/api/build?username=${username}`);
     if (res.ok) {
       // console.log('Res from useBuildTimeData:', res);

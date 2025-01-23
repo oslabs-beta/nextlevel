@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import styles from '../dashboard.module.css';
 import useBundleData from '../hooks/useBundleData';
@@ -54,7 +56,7 @@ function BundleLog({username}) {
 
   // Update currentIndex and currentLog when bundleLogs is updated
   useEffect(() => {
-    if (bundleLogs.length > 0) {
+    if (bundleLogs && bundleLogs.length > 0) {
       const logsLength = bundleLogs.length;
       setCurrentIndex(logsLength - 1); // Set index to the last log initially
       setCurrentLog(bundleLogs[logsLength - 1]); // Set current log to last log
@@ -80,8 +82,8 @@ function BundleLog({username}) {
     return date.toLocaleString();
   };
 
-  if (bundleLogs.length === 0) {
-    return <div>No logs available.</div>; // or handle accordingly
+  if (!bundleLogs || bundleLogs.length === 0) {
+    return <div>No logs available.</div>; // Placeholder when no logs are available
   }
 
 

@@ -9,22 +9,27 @@ const Step = ({ stepNumber, title, description, code, language, api, username })
   
   useEffect(() => {
     if(api === true) {
-      fetch(`https://www.nextlevel-dash.com/onboarding/api?username=${username}`)
+      // Determine API URL based on the environment
+      const apiUrl = process.env.NODE_ENV === 'development'
+        ? `http://localhost:3000/onboarding/api?username=${username}`  // Local API for dev
+        : `https://www.nextlevel-dash.com/onboarding/api?username=${username}`;  // Production API URL
+      
+      fetch(apiUrl)
       .then((res) => {
         if (res.ok) {
           // console.log('res:', res);
-          return res.json();
+          return res.json(); // Parse the JSON response
         }
       })
       .then((data) => {
         // console.log('API key in onboardin page:', data.APIkey);
-        setAPIkey(data.APIkey);
+        setAPIkey(data.APIkey); // Set the API key in state
       })
       .catch((error) => {
         console.error('Error fetching API key:', error);
       });
     }
-  }, [username]);
+  }, [username, api]);
   
   const formattedCode = code.split('\n').map((line, index) => (
     <span key={index}>{line}<br /></span>

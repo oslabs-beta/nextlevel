@@ -9,6 +9,14 @@ const nextConfig = {
   experimental: {
     instrumentationHook: true,
   },  
+  async rewrites() {
+    return [
+      {
+        source: '/dashboard/api/:path*',  // matches requests made to the '/dashboard/api' path
+        destination: 'https://www.nextlevel-dash.com/dashboard/api/:path*',  // forward to the external API server
+      },
+    ]
+  },
   async headers() {
         return [
             {
@@ -22,7 +30,12 @@ const nextConfig = {
                 ]
             }
         ]
-    }
+    },
+  // This could help with resolving any URL paths to ensure they reach the correct destination.
+  // Optional if rewrites are not working perfectly.
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/dashboard/api',
+  },
 };
 
 export default withBundleAnalyzer(nextConfig);

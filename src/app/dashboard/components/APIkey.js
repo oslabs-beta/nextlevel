@@ -9,7 +9,12 @@ function APIKey({ username }) {
   const [ api, setApi ] = useState('');
 
   useEffect(() => {
-    fetch(`https://www.nextlevel-dash.com/onboarding/api?username=${username}`)
+
+    const apiUrl = process.env.NODE_ENV === 'development'
+    ? `http://localhost:3000/onboarding/api?username=${username}`  // Local URL in dev mode
+    : `https://www.nextlevel-dash.com/onboarding/api?username=${username}`;  // Production URL
+
+    fetch(apiUrl)
     .then((res) => {
       if (res.ok) {
         // console.log('res:', res);

@@ -9,6 +9,8 @@ export async function GET(request) {
     const metricType = searchParams.get('metricType');
     const start = searchParams.get('start');
     const end = searchParams.get('end');
+
+    console.log("Received username:", username);  // Log the received username
   
     if (!username || !metricType || !start || !end) {
       return NextResponse.json({ message: 'Username, metric type, start date, and end date are required' }, { status: 400 });
@@ -23,12 +25,24 @@ export async function GET(request) {
     }
     const metricData = [];
 
-    foundUser[metricType].forEach(metric => {
-      const metricDate = new Date(metric["metricDate"]);
-      if (metricDate >= startDate && metricDate <= endDate) {
-        metricData.push(metric);
-      }
+    // Get the metric data from the user's document based on metric type
+    const metrics = foundUser[metricType] || [];
+
+    const filteredMetrics = metrics.filter(metric => {
+      const metricDate = new Date(metric.metricDate);
+      return metricDate >= startDate && metricDate <= endDate;
     });
+
+    // If no data is found for the metric, return default value
+    if (filteredMetrics.length === 0) {
+      metricData.push({
+        metricType,
+        metricValue: 0,  // Default value for no data
+        timestamp: startDate,  // Placeholder timestamp
+      });
+    } else {
+      metricData.push(...filteredMetrics);
+    }
 
     return NextResponse.json(metricData, { status: 200 });
   } catch (error) {
