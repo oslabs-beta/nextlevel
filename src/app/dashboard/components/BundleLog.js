@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../dashboard.module.css';
 import useBundleData from '../hooks/useBundleData';
-import { set } from 'mongoose';
-
 
 function BundleLog({username}) {
   console.log('entering build time metrics for username:', username);
@@ -12,33 +10,56 @@ function BundleLog({username}) {
   const [currentLog, setCurrentLog] = useState({});
 
 
-  useEffect(() => {
-    useBundleData(username)
-    .then(logs => {
-      // console.log('Bundle Logs:', logs);
-      setBundleLogs(logs);
-      return logs;
-    }).then(logs => {
-      // console.log('logs length ', logs.length)
-      const logsLength = logs.length
-      setCurrentIndex(logsLength - 1);
-      // console.log('Current Index:', currentIndex);
-      setCurrentLog(bundleLogs[currentIndex]);
-      // console.log('Current Log:', currentLog);
-    })
-    .catch(error => {
-      console.error('Error fetching bundle log:', error);
-    });
+  // useEffect(() => {
+  //   useBundleData(username)
+  //   .then(logs => {
+  //     // console.log('Bundle Logs:', logs);
+  //     setBundleLogs(logs);
+  //     return logs;
+  //   }).then(logs => {
+  //     // console.log('logs length ', logs.length)
+  //     const logsLength = logs.length
+  //     setCurrentIndex(logsLength - 1);
+  //     // console.log('Current Index:', currentIndex);
+  //     setCurrentLog(bundleLogs[currentIndex]);
+  //     // console.log('Current Log:', currentLog);
+  //   })
+  //   .catch(error => {
+  //     console.error('Error fetching bundle log:', error);
+  //   });
 
-  }, []);
+  // }, []);
 
   useEffect(() => {
-    const logsLength = bundleLogs.length;
-    setCurrentIndex(logsLength - 1);
-    // console.log('Current Index:', currentIndex);
-    setCurrentLog(bundleLogs[currentIndex]);
-    // console.log('Current Log:', currentLog);
-  }, [bundleLogs]);
+    // Fetch the bundle logs asynchronously
+    const fetchLogs = async () => {
+      try {
+        const logs = await useBundleData(username);
+        setBundleLogs(logs);  // Set the fetched bundle logs
+      } catch (error) {
+        console.error('Error fetching bundle log:', error);
+      }
+    };
+
+    fetchLogs();
+  }, [username]); // This effect will run when the username changes
+
+  // useEffect(() => {
+  //   const logsLength = bundleLogs.length;
+  //   setCurrentIndex(logsLength - 1);
+  //   // console.log('Current Index:', currentIndex);
+  //   setCurrentLog(bundleLogs[currentIndex]);
+  //   // console.log('Current Log:', currentLog);
+  // }, [bundleLogs]);
+
+  // Update currentIndex and currentLog when bundleLogs is updated
+  useEffect(() => {
+    if (bundleLogs.length > 0) {
+      const logsLength = bundleLogs.length;
+      setCurrentIndex(logsLength - 1); // Set index to the last log initially
+      setCurrentLog(bundleLogs[logsLength - 1]); // Set current log to last log
+    }
+  }, [bundleLogs]); // This effect runs whenever bundleLogs changes
 
   const toggleBack = () => {
     if (currentIndex > 0) {
@@ -59,7 +80,7 @@ function BundleLog({username}) {
     return date.toLocaleString();
   };
 
-  if (!currentLog) {
+  if (bundleLogs.length === 0) {
     return <div>No logs available.</div>; // or handle accordingly
   }
 

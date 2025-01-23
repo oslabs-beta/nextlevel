@@ -4,8 +4,13 @@ import React, { useEffect, useState } from 'react';
 
 const useBundleData = async (username) => {
   // console.log('entering use effect usebundledata for:', username);
+
+  const baseUrl = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:3000/dashboard/api/bundle'  // Local API for dev
+  : 'https://www.nextlevel-dash.com/dashboard/api/bundle';  // Production API URL
+
   try {
-    const res = await fetch(`https://www.nextlevel-dash.com/dashboard/api/bundle?username=${username}`);
+    const res = await fetch(`${baseUrl}?username=${username}`);
     // const res = await fetch(`http://localhost:3000/dashboard/api/bundle?username=${username}`);
     if (res.ok) {
       // console.log('res from useBundleData:', res);
