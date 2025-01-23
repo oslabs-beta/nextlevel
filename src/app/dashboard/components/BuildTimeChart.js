@@ -38,21 +38,24 @@ function BuildTimeChart({ username }) {
     useBuildTimeData(username)
     .then(data => {
       // console.log('Bundle Logs:', logs);
-      setBuildTimeData(data);
-      return data;
+      if (data) {
+        setBuildTimeData(data);
+      }
+      // return data;
     }).catch(error => {
       console.error('Error fetching build time:', error);
     });
-  }, []);
+  }, [username]);
 
   // console.log('Build Time Data:', buildTimeData);
 
+  // Only attempt to map if buildTimeData is not empty
   const chartData = {
-    labels: buildTimeData.map(entry => new Date(entry.buildDate)),
+    labels: (buildTimeData || []).map(entry => new Date(entry.buildDate)),
     datasets: [
       {
         label: 'Build Time',
-        data: buildTimeData.map(entry => entry.buildTime),
+        data: (buildTimeData || []).map(entry => entry.buildTime),
         fill: false,
         borderColor: 'rgb(75, 192, 192)',
         tension: 0.1,
@@ -103,6 +106,11 @@ function BuildTimeChart({ username }) {
       link.click();
     }
   };
+
+  // Handle case when data is not available
+  if (buildTimeData.length === 0) {
+    return <div>No build time data available.</div>; // Optional: Handle case when data is not available
+  }
 
   return (
     <div className={styles.buildTimeDiv}>
