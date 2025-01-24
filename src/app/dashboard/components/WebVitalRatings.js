@@ -21,12 +21,12 @@ const WebVitalRatings = ({ data }) => {
         if (!data || data.length === 0) {
             // Render empty (default) values if no data is available
             setVitalRatings([
-              <Rating key="TTFB" goodRange={ranges.TTFB} needsImprovementRange={ranges.TTFB} poorRange={ranges.TTFB} currentValue={null} metricType="TTFB" />,
-              <Rating key="LCP" goodRange={ranges.LCP} needsImprovementRange={ranges.LCP} poorRange={ranges.LCP} currentValue={null} metricType="LCP" />,
-              <Rating key="FCP" goodRange={ranges.FCP} needsImprovementRange={ranges.FCP} poorRange={ranges.FCP} currentValue={null} metricType="FCP" />,
-              <Rating key="FID" goodRange={ranges.FID} needsImprovementRange={ranges.FID} poorRange={ranges.FID} currentValue={null} metricType="FID" />,
-              <Rating key="INP" goodRange={ranges.INP} needsImprovementRange={ranges.INP} poorRange={ranges.INP} currentValue={null} metricType="INP" />,
-              <Rating key="CLS" goodRange={ranges.CLS} needsImprovementRange={ranges.CLS} poorRange={ranges.CLS} currentValue={null} metricType="CLS" />,
+              <Rating key="TTFB" goodRange={ranges.TTFB} needsImprovementRange={ranges.TTFB} poorRange={ranges.TTFB} currentValue={0} metricType="TTFB" />,
+              <Rating key="LCP" goodRange={ranges.LCP} needsImprovementRange={ranges.LCP} poorRange={ranges.LCP} currentValue={0} metricType="LCP" />,
+              <Rating key="FCP" goodRange={ranges.FCP} needsImprovementRange={ranges.FCP} poorRange={ranges.FCP} currentValue={0} metricType="FCP" />,
+              <Rating key="FID" goodRange={ranges.FID} needsImprovementRange={ranges.FID} poorRange={ranges.FID} currentValue={0} metricType="FID" />,
+              <Rating key="INP" goodRange={ranges.INP} needsImprovementRange={ranges.INP} poorRange={ranges.INP} currentValue={0} metricType="INP" />,
+              <Rating key="CLS" goodRange={ranges.CLS} needsImprovementRange={ranges.CLS} poorRange={ranges.CLS} currentValue={0} metricType="CLS" />,
             ]);
             return;
           }
@@ -72,38 +72,63 @@ const WebVitalRatings = ({ data }) => {
             }
         });
 
-        const metrics = Object.keys(ranges);
-        const vitals = metrics.map(metric => {
-            const unrounded = averages[metric][0] / averages[metric][1];
-            let val;
-            if(metric === "CLS") {
-                if(!unrounded) {
-                    val = Math.round(unrounded);
-                } else {
-                    val = unrounded.toFixed(4);
-                }
-            } else {
-                val = Math.round(unrounded);
-            }
-            // if (metric === "CLS") {
-            //     val = unrounded ? unrounded.toFixed(4) : 0; // Default to 0 if no data
-            // } else {
-            //     val = Math.round(unrounded) || 0; // Default to 0 if no data
-            // }
-            return (
-                <Rating
-                    key={metric}
-                    goodRange={[ranges[metric][0],ranges[metric][1]]}
-                    needsImprovementRange={[ranges[metric][1],ranges[metric][2]]}
-                    poorRange={[ranges[metric][2],ranges[metric][3]]}
-                    currentValue={val}
-                    metricType={metric}
-                />
-            );
-        });
-        setVitalRatings(vitals);
-    }, [data]);
+        // cleaner version of above??
+        // data.forEach(entry => {
+        //     if (averages[entry.metricType]) {
+        //         averages[entry.metricType][0] += entry.metricValue;
+        //         averages[entry.metricType][1]++;
+        //     }
+        // });
 
+    //     const metrics = Object.keys(ranges);
+    //     const vitals = metrics.map(metric => {
+    //         const unrounded = averages[metric][0] / averages[metric][1];
+    //         let val;
+    //         if(metric === "CLS") {
+    //             if(!unrounded) {
+    //                 val = Math.round(unrounded);
+    //             } else {
+    //                 val = unrounded.toFixed(4);
+    //             }
+    //         } else {
+    //             val = Math.round(unrounded);
+    //         }
+    //         // if (metric === "CLS") {
+    //         //     val = unrounded ? unrounded.toFixed(4) : 0; // Default to 0 if no data
+    //         // } else {
+    //         //     val = Math.round(unrounded) || 0; // Default to 0 if no data
+    //         // }
+    //         return (
+    //             <Rating
+    //                 key={metric}
+    //                 goodRange={[ranges[metric][0],ranges[metric][1]]}
+    //                 needsImprovementRange={[ranges[metric][1],ranges[metric][2]]}
+    //                 poorRange={[ranges[metric][2],ranges[metric][3]]}
+    //                 currentValue={val}
+    //                 metricType={metric}
+    //             />
+    //         );
+    //     });
+    //     setVitalRatings(vitals);
+    // }, [data]);
+
+    const ratings = Object.keys(averages).map(metricType => {
+        const [total, count] = averages[metricType];
+        const averageValue = count > 0 ? total / count : 0;
+        return (
+            <Rating
+                key={metricType}
+                goodRange={ranges[metricType]}
+                needsImprovementRange={ranges[metricType]}
+                poorRange={ranges[metricType]}
+                currentValue={averageValue}
+                metricType={metricType}
+            />
+        );
+    });
+
+    setVitalRatings(ratings);
+}, [data]);
 
     // if (vitalRatings.length === 0) {
     //     // Fallback to empty ratings if no data or still loading

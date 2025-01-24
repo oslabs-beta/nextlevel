@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { CategoryBar } from '@tremor/react';
+// import { CategoryBar } from '@tremor/react';
+import { CategoryBar } from './CategoryBar'
 import styles from '../dashboard.module.css';
 
 const Rating = ({ goodRange, needsImprovementRange, poorRange, metricType, currentValue }) => {
@@ -15,7 +16,7 @@ const Rating = ({ goodRange, needsImprovementRange, poorRange, metricType, curre
 
     // Set the values for the CategoryBar
     setCategoryBarValues([goodValue, needsImprovementValue, poorValue]);
-  }, [currentValue, goodRange, needsImprovementRange, poorRange]);
+  }, [currentValue, goodRange, needsImprovementRange, poorRange])
 
   // Tooltip text based on value
   const statusText = currentValue === 0
@@ -98,21 +99,18 @@ const Rating = ({ goodRange, needsImprovementRange, poorRange, metricType, curre
   //   createChart();
   // }, [poorRange, needsImprovementRange, goodRange, currentValue]);
 
+  
   return (
     <div className={styles.ratingDiv}>
       <h2 className={styles.ratingHeading}>{metricType}</h2>
       {/* <div className={styles.ratingGauge} ref={chartRef}></div> */}
       <div className={styles.ratingBar}>
-        <CategoryBar
-          values={categoryBarValues}
-          marker={{
-            value: currentValue ?? 0,  // If no data, pass 0 to render empty bar
-            tooltip: statusText, 
-            showAnimation: true
-          }}
-          colors={['green', 'yellow', 'red']}  // Green, Yellow, Red for good, needs improvement, poor ranges
-          className="mx-auto max-w-sm"
-        />
+      <CategoryBar
+        values={[10, 10, 20]}
+        marker={{ value: 17, tooltip: "68", showAnimation: true }}
+        colors={["pink", "amber", "emerald"]}
+       className="mx-auto max-w-sm"
+      />
         <div className={styles.statusText}>{statusText}</div>
       </div>
     </div>
