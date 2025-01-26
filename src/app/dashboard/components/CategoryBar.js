@@ -1,21 +1,11 @@
-"use client";
-
 import React from "react";
 import { AvailableChartColors, getColorClassName } from "../../lib/utils/chartColors";
 import { cx } from "../../lib/utils/cx";
-import { Tooltip } from "./Tooltip";
+import * as TooltipPrimitives from "@radix-ui/react-tooltip";
+import styles from '../dashboard.module.css';
 
 const getMarkerBgColor = (marker, values, colors) => {
   if (marker === undefined) return "";
-
-  if (marker === 0) {
-    for (let index = 0; index < values.length; index++) {
-      if (values[index] > 0) {
-        return getColorClassName(colors[index], "bg");
-      }
-    }
-  }
-
   let prefixSum = 0;
   for (let index = 0; index < values.length; index++) {
     prefixSum += values[index];
@@ -23,7 +13,6 @@ const getMarkerBgColor = (marker, values, colors) => {
       return getColorClassName(colors[index], "bg");
     }
   }
-
   return getColorClassName(colors[values.length - 1], "bg");
 };
 
@@ -31,78 +20,85 @@ const getPositionLeft = (value, maxValue) => (value ? (value / maxValue) * 100 :
 
 const sumNumericArray = (arr) => arr.reduce((prefixSum, num) => prefixSum + num, 0);
 
-const CategoryBar = ({ 
-  values, 
-  marker, 
-  colors = ["emerald", "amber", "pink"], 
-  maxValue,
-  className 
-}) => {
-  const effectiveMaxValue = maxValue || Math.max(...values);
-  
-  const colorValues = {
-    emerald: "#10B981",
-    amber: "#F59E0B",
-    pink: "#EC4899"
-  };
+const formatNumber = (num) => {
+  if (Number.isInteger(num)) {
+    return num.toString();
+  }
+  return num.toFixed(1);
+};
+
+const BarLabels = ({ values }) => {
+  const sumValues = values.reduce((sum, value) => sum + value, 0);
+  let prefixSum = 0;
 
   return (
-    <div style={{
-      width: '100%',
-      height: '32px',
-      margin: '8px 0',
-    }}>
-      <div style={{
-        position: 'relative',
-        height: '8px',
-        width: '100%',
-        borderRadius: '9999px',
-        backgroundColor: '#E5E7EB',
-        overflow: 'hidden',
-      }}>
-        {values.map((value, index) => {
-          const leftPosition = index === 0 ? 0 : sumNumericArray(values.slice(0, index));
-          const width = (value / effectiveMaxValue) * 100;
-          
-          return (
-            <div
-              key={index}
-              style={{
-                position: 'absolute',
-                height: '100%',
-                left: `${(leftPosition / effectiveMaxValue) * 100}%`,
-                width: `${width}%`,
-                minWidth: '1px',
-                backgroundColor: colorValues[colors[index]] || '#6B7280',
-                borderRadius: index === 0 ? '9999px 0 0 9999px' : 
-                            index === values.length - 1 ? '0 9999px 9999px 0' : '',
-              }}
-            />
-          );
-        })}
-        
+    <div className={styles.barLabels}>
+      <div className={styles.labelZero}>0</div>
+      {values.map((value, index) => {
+        prefixSum += value;
+        return (
+          <div 
+            key={`label-${index}`} 
+            className={styles.labelContainer}
+            style={{ width: `${(value / sumValues) * 100}%` }}
+          >
+            <span className={styles.label}>
+              {formatNumber(prefixSum)}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export const CategoryBar = ({ values, marker, colors }) => {
+  const maxValue = values.reduce((sum, value) => sum + value, 0);
+  const markerPositionLeft = marker ? (marker.value / maxValue) * 100 : 0;
+
+  return (
+    <div className={styles.categoryBarContainer}>
+      <BarLabels values={values} />
+      <div className={styles.barContainer}>
+        {values.map((value, index) => (
+          <div
+            key={`bar-${index}`}
+            className={`${styles.bar} ${styles[`${colors[index]}Bg`]}`}
+            style={{ width: `${(value / maxValue) * 100}%` }}
+          />
+        ))}
         {marker && (
-          <Tooltip content={marker.tooltip}>
-            <div
-              style={{
-                position: 'absolute',
-                top: '50%',
-                height: '16px',
-                width: '2px',
-                transform: 'translate(-50%, -50%)',
-                backgroundColor: colorValues[colors[Math.floor(marker.value / (effectiveMaxValue / 3))]] || '#6B7280',
-                left: `${(marker.value / effectiveMaxValue) * 100}%`,
-                zIndex: 10,
-              }}
-            />
-          </Tooltip>
+          <TooltipPrimitives.Provider delayDuration={0}>
+            <TooltipPrimitives.Root>
+              <TooltipPrimitives.Trigger asChild>
+                <div 
+                  className={styles.marker}
+                  style={{ left: `${markerPositionLeft}%` }}
+                >
+                  <div className={styles.markerLine} />
+                </div>
+              </TooltipPrimitives.Trigger>
+              <TooltipPrimitives.Portal>
+                <TooltipPrimitives.Content
+                  side="top"
+                  sideOffset={4}
+                  align="center"
+                  style={{ fontSize: '12px' }}
+                  className="max-w-60 select-none rounded-md px-2 py-1 leading-3 shadow-md text-gray-50 bg-gray-900"
+                >
+                  {marker.tooltip}
+                  <TooltipPrimitives.Arrow className="fill-gray-900" width={8} height={4} />
+                </TooltipPrimitives.Content>
+              </TooltipPrimitives.Portal>
+            </TooltipPrimitives.Root>
+          </TooltipPrimitives.Provider>
         )}
       </div>
     </div>
   );
 };
 
-export default CategoryBar;
+CategoryBar.displayName = "CategoryBar";
 
 // const formatNumber = (num) => {
 //   if (Number.isInteger(num)) {
@@ -191,4 +187,4 @@ export default CategoryBar;
 
 // CategoryBar.displayName = "CategoryBar";
 
-export { CategoryBar };
+

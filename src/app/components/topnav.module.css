@@ -24,10 +24,7 @@
 }
 
 .logo img {
-  height: 40px; /* Adjust size as needed */
-  max-width: 160px; /* Adjust the maximum width as needed */
-  width: auto; /* Ensure the aspect ratio is maintained */
-  max-height: 40px; /* Ensure the logo doesn't exceed the specified height */
+  display: block; /* Add this to prevent any unwanted spacing */
 }
 
 .links {
@@ -79,4 +76,9 @@
   .links {
     gap: 10px;
   }
+}
+
+.logoImage {
+  height: 40px !important;
+  width: 160px !important;
 }

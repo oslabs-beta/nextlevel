@@ -15,7 +15,6 @@ import {
   TimeScale
 } from 'chart.js';
 import 'chartjs-adapter-date-fns';
-import useWebVitalsData from '../hooks/useWebVitalsData';
 
 ChartJS.register(
   CategoryScale,
@@ -29,110 +28,90 @@ ChartJS.register(
 );
 
 function WebVitalsChart({ webVitalsData }) {
-    const chartRef = useRef(null);
+  const chartRef = useRef(null);
+  
+  // Group data by metric type and get latest values
+  const getLatestMetrics = (data, metricType) => {
+    return data
+      .filter(entry => entry.metricType === metricType)
+      .sort((a, b) => new Date(b.metricDate) - new Date(a.metricDate))
+      .map(entry => ({
+        x: new Date(entry.metricDate),
+        y: entry.metricValue
+      }));
+  };
+
   const chartData = {
-    labels: webVitalsData.map(entry => new Date(entry.metricDate)),
     datasets: [
       {
         label: 'Time to First Byte (ms)',
-        data: webVitalsData.map(entry => {
-          if (entry.metricType === 'TTFB') {
-            return entry.metricValue;
-          } else {
-            return null;
-          }
-        }),
-        fill: false,
+        data: getLatestMetrics(webVitalsData, 'TTFB'),
         borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1,
-      },
-      {
-        label: 'Largest Contentful Paint (ms)',
-        data: webVitalsData.map(entry => {
-          if (entry.metricType === 'LCP') {
-            return entry.metricValue;
-          } else {
-            return null;
-          }
-        }),
-        fill: false,
-        borderColor: 'rgb(199,235,185)',
-        tension: 0.1,
+        tension: 0.1
       },
       {
         label: 'First Contentful Paint (ms)',
-        data: webVitalsData.map(entry => {
-          if (entry.metricType === 'FCP') {
-            return entry.metricValue;
-          } else {
-            return null;
-          }
-        }),
-        fill: false,
+        data: getLatestMetrics(webVitalsData, 'FCP'),
         borderColor: 'rgb(255, 99, 132)',
-        tension: 0.1,
+        tension: 0.1
+      },
+      {
+        label: 'Largest Contentful Paint (ms)',
+        data: getLatestMetrics(webVitalsData, 'LCP'),
+        borderColor: 'rgb(54, 162, 235)',
+        tension: 0.1
       },
       {
         label: 'First Input Delay (ms)',
-        data: webVitalsData.map(entry => {
-          if (entry.metricType === 'FID') {
-            return entry.metricValue;
-          } else {
-            return null;
-          }
-        }),
-        fill: false,
+        data: getLatestMetrics(webVitalsData, 'FID'),
         borderColor: 'rgb(153, 102, 255)',
-        tension: 0.1,
+        tension: 0.1
       },
       {
         label: 'Interaction to Next Paint (ms)',
-        data: webVitalsData.map(entry => {
-          if (entry.metricType === 'INP') {
-            return entry.metricValue;
-          } else {
-            return null;
-          }
-        }),
-        fill: false,
-        borderColor: 'rgb(54, 162, 235)',
-        tension: 0.1,
-      },
-    ],
+        data: getLatestMetrics(webVitalsData, 'INP'),
+        borderColor: 'rgb(255, 159, 64)',
+        tension: 0.1
+      }
+    ]
   };
 
   const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      // title: {
+      //   display: true,
+      //   text: 'Web Vitals Metrics'
+      // }
+    },
     scales: {
       x: {
         type: 'time',
         time: {
           unit: 'minute',
-          tooltipFormat: 'MMM dd, yyyy HH:mm', // Format the tooltip
-          displayFormats: {
-            minute: 'MMM dd, yyyy HH:mm', // Format for the x-axis labels
-          },
+          tooltipFormat: 'MMM dd, yyyy HH:mm'
         },
         title: {
           display: true,
           text: 'Date/Time',
-        },
+          align: 'center',
+          padding: { top: 20 },
+          font: {
+            size: 12
+          }
+        }
       },
       y: {
         title: {
           display: true,
-          text: 'Speed (ms)',
-        },
-      },
-    },
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-      },
-    },
+          text: 'Time (ms)'
+        }
+      }
+    }
   };
 
   const downloadChart = () => {
@@ -146,11 +125,11 @@ function WebVitalsChart({ webVitalsData }) {
   };
   
   return (
-    <div>
-      <div> 
-        <Line data={chartData} options={options} ref={chartRef}/>
+    <div className={styles.webVitalsChartContainer}>
+      <div className={styles.webVitalsChart}>
+        <Line data={chartData} options={options} ref={chartRef} />
       </div>
-      <button onClick={downloadChart} id={styles.downloadWebVitals} className={styles.downloadButton}>
+      <button onClick={downloadChart} className={styles.downloadButton}>
         Download
       </button>
     </div>

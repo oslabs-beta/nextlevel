@@ -1,13 +1,13 @@
 .dashboardContainer {
   display: flex;
   height: 100vh;
-  /* overflow: hidden; */
   background-color: #e7e7e7;
 }
 
+/* Sidebar Styles */
 .sidebar {
   position: fixed;
-  top: 70px; /* Adjust this value to match the height of your top nav */
+  top: 70px;
   left: 0;
   bottom: 0;
   width: 15%;
@@ -21,17 +21,16 @@
   text-decoration: none;
 }
 
-.top-section{
+.top-section {
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   box-sizing: border-box;
   margin-left: -10px;
-  /* border: 3px solid yellow; */
 }
 
-.sidebarTop{
+.sidebarTop {
   margin-left: -20px;
   text-decoration: none;
 }
@@ -42,10 +41,9 @@
   flex-direction: column;
   justify-content: flex-end;
   box-sizing: border-box;
-  /* border: 3px solid red; */
 }
 
-.sidebarBottom{
+.sidebarBottom {
   display: flex;
   flex-direction: row;
   margin-left: -20px;
@@ -57,17 +55,17 @@
   text-decoration: none;
   color: white;
   padding: 10px 0;
-  overflow: hidden; /* Prevent content from bleeding out */
-  white-space: nowrap; /* Prevent text from wrapping */
-  text-overflow: ellipsis; /* Show ellipsis for overflow text */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .link {
   color: #e7e7e7;
   text-decoration: none;
-  overflow: hidden; /* Prevent content from bleeding out */
-  white-space: nowrap; /* Prevent text from wrapping */
-  text-overflow: ellipsis; /* Show ellipsis for overflow text */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .sidebarListItems {
@@ -75,9 +73,9 @@
   display: block;
   font-size: 20px;
   text-decoration: none;
-  overflow: hidden; /* Prevent content from bleeding out */
-  white-space: nowrap; /* Prevent text from wrapping */
-  text-overflow: ellipsis; /* Show ellipsis for overflow text */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .sidebarListIcons {
@@ -87,67 +85,24 @@
   vertical-align: middle;
   margin-top: 2px;
   font-size: 25px;
-  overflow: hidden; /* Prevent content from bleeding out */
-  white-space: nowrap; /* Prevent text from wrapping */
-  text-overflow: ellipsis; /* Show ellipsis for overflow text */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
+/* Main Content Area */
 .mainContent {
-  margin-left: 15%; /* Add this to account for the fixed sidebar */
-  padding-top: 60px; /* Add padding to account for the top nav */
+  margin-left: 15%;
+  padding: 80px 20px 20px 20px;
   width: 85%;
-  padding: 20px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  overflow-y: auto; /* Allow scrolling for the main content */
-  /* height: calc(100vh - 60px); Subtract the height of the top nav */
+  overflow-y: auto;
 }
 
-.apiContainer {
-  display: flex;
-  align-items: center;
-  align-self: center;
-  gap: 10px;
-  padding-top: 80px;
-  width: 97.5%;
-}
-
-#apiTitle {
-  margin-right: 10px;
-}
-
-.apiCodeInput {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.copyButton {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  font-family: 'Poppins', sans-serif;
-}
-
-.copyButton:hover {
-  background-color: #0056b3;
-  transform: translateY(2px);
-}
-
-.copySuccess {
-  margin-left: 10px;
-  color: green;
-  font-size: 14px;
-}
-
+/* Chart Container Styles */
 .chartContainer {
   position: relative;
   background-color: #ffffff;
@@ -171,296 +126,418 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 0 10px 0;
+}
 
+.filterContainer {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.dateInput {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 200px;
+}
+
+.timeInput {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100px;
+}
+
+.filterButton {
+  padding: 8px 16px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.filterButton:hover {
+  background-color: #357abd;
 }
 
 .chartTitle {
-  margin: 0 0 5px 0; /* Add bottom margin to space title from the chart */
-  flex-shrink: 0; /* Prevent title from shrinking */
+  margin: 0 0 5px 0;
+  flex-shrink: 0;
+}
+
+/* Web Vitals Section */
+.webVitalsSection {
+  width: 100%;
+  margin-bottom: 30px;
 }
 
 .webVitalsChartContainer {
   display: flex;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
-
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  height: 400px;
 }
 
 .webVitalsChart {
-  display: flex;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
-  width: 80%;
-  min-width: 300px;
-  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
 }
 
+.clsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  height: fit-content;
+}
+
+.clsChartWrapper {
+  width: 100%;
+  height: 300px;
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.buildTimeChart {
+  width: 100%;
+  height: 250px;
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.buildTimeDiv {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  padding: 20px;
+  border-radius: 8px;
+  height: fit-content;
+  margin: 0 auto;
+}
+
+/* CLS Section */
+.clsSection {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.ratingsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.ratingsRow {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.ratingsRow > div {
+  width: calc(50% - 10px);
+}
+
+.centerSingle {
+  width: calc(50% - 10px) !important;
+  margin: 0 auto;
+}
+
+.ratingDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2px 15px 10px 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.ratingHeading {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.ratingBar {
+  width: 100%;
+  background: white;
+  padding: 10px 10px 6px 10px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.statusText {
+  font-size: 0.8rem;
+  color: #4b5563;
+  text-align: center;
+  margin-top: 6px;
+}
+
+/* Download Button */
+.downloadButton {
+  width: auto;
+  padding: 8px 16px;
+  background-color: white;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 15px;
+  transition: all 0.2s ease;
+}
+
+.downloadButton:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Category Bar Styles */
+.categoryBarContainer {
+  position: relative;
+  width: 100%;
+}
+
+.barContainer {
+  position: relative;
+  display: flex;
+  height: 8px;
+  width: 100%;
+  overflow: visible;
+  border-radius: 9999px;
+}
+
+.bar {
+  height: 100%;
+}
+
+/* Bar Colors */
+.emeraldBg { background-color: #10B981; }
+.amberBg { background-color: #F59E0B; }
+.pinkBg { background-color: #EC4899; }
+.grayBg { background-color: #E5E7EB; }
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .ratingsSection {
+    flex-direction: column;
+  }
+
+  .ratingsRow {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .clsSection {
+    width: 100%;
+  }
+
+  .centerSingle {
+    width: 100%;
+  }
+}
 
 .buildCharts {
   display: flex;
   gap: 20px;
-  flex-wrap: nowrap;
   width: 100%;
-  height: auto; /* Allow the container to adjust its height based on its content */
-  align-items: stretch; /* Ensures all children stretch to fill the container vertically */
-  overflow: hidden; /* Prevents children from overflowing */
+  align-items: flex-start;
 }
 
-.buildTimeDiv {
-  width: 50%;
-  height: auto;
-}
-.buildTimeChart {
+.apiKeyContainer {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px 10px 10px 10px;
+  width: 98%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 85%;
-  width: 100%;
-  min-width: 300px; /* Minimum width to prevent them from getting too small */
-  box-sizing: border-box;
-  overflow: hidden; /* Additional overflow handling within the chart area */
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.apiKeyTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.apiKeyDisplay {
+  background: #f8f9fa;
+  padding: 8px 15px;
+  border-radius: 6px;
+  font-family: monospace;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+  font-size: 0.95rem;
+  flex: 1;
+  max-width: 600px;
 }
 
 .bundleLogContainer {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  height: 100%;
-  width: 100%;
-  min-width: 300px; /* Minimum width to prevent them from getting too small */
-  box-sizing: border-box;
-  overflow: hidden; /* Prevent content from bleeding out */
+  min-width: 300px;
+  max-width: 500px;
+  height: fit-content;
+  margin-left: 20px;
 }
 
 .bundleLogTitle {
-  align-self: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+  text-align: center;
 }
+
 .bundleToggleBox {
-  background-color: #ffffff;
-  width: 100%;
+  background: rgb(233, 233, 233);
+  border-radius: 6px;
+  margin-bottom: 10px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
 }
 
 .bundleHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #c9c9c9;
-  padding: 0.5em 1em;
-  font-size: 0.9em;
-  border-bottom: 1px solid #eaeaea;
-  border-radius: 10px 10px 0px 0px;
-  box-sizing: border-box;
-}
-
-.bundleLogTitle {
-  margin: 2px;
-}
-
-.bundleLogContent {
-  padding: 1em;
-  background-color: #ffffff;
-  border-radius: 0px 0px 10px 10px;
-  flex: 1; /* Allow the chart to grow and take up remaining space */
-  overflow: auto; /* Add overflow auto to handle any content overflow */
-  box-sizing: border-box;
+  background: rgb(201, 201, 201);
+  padding: 8px;
+  font-size: 14.4px;
 }
 
 .toggleButton {
-  font-size: 1.1rem;
-  background-color: #c9c9c9;
+  padding: 4px 12px;
+  background: rgb(201, 201, 201);
   border: none;
-  color: #143A52;
+  cursor: pointer;
+  color: #374151;
+  font-size: 16px;
+}
+
+.toggleButton:hover:not(:disabled) {
+  background: #c0c0c0;
 }
 
 .toggleButton:disabled {
-  background-color: #c9c9c9;
-  color: #a1a1a1;
   cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .bundleLog {
-  display: flex;
-  padding: 0 15px;
-  background-color: #e9e9e9;
-  overflow-x: auto;
-  border-radius: 0px 0px 10px 10px ;
+  font-family: monospace;
+  font-size: 13px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #374151;
+  padding: 15px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 25px;
+  width: calc(100% - 30px);
+  box-sizing: border-box;
 }
 
-.downloadButton {
-  padding: 5px 10px;
-  margin: 3px;
-  margin-top: 25px;
-  background-color: #ffffff; /* Set background to white */
-  color: #7e7e7e; /* Set text color to grey */
-  border: 1px solid #7e7e7e; /* Set border color to grey */
-  border-radius: 5px;
+.bundleLog pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  width: 100%;
+}
+
+.marker {
+  position: absolute;
+  width: 3px;
+  height: 100%;
+  transform: translateX(-50%);
+  background-color: white;
+  z-index: 2;
   cursor: pointer;
-  width: 82px;
+}
+
+.markerLine {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background-color: white;
+}
+
+.barLabels {
+  position: relative;
   display: flex;
-  justify-content: flex-start;
-  font-family: 'Poppins', sans-serif;
+  width: 100%;
+  height: 16px;
+  margin-top: 2px;
 }
 
-.downloadButton:hover {
-  background-color: #007bff; /* Set background color to blue on hover */
-  color: white; /* Set text color to white on hover */
-  border: 1px solid #007bff; /* Set border color to blue on hover */
-  transform: translateY(2px);
+.labelZero {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 10px;
+  color: #666;
 }
 
-.webVitalsFilter {
+.labelContainer {
   display: flex;
-  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding-right: 2px;
 }
 
-.dateFilter {
+.label {
+  display: block;
+  transform: translateX(50%);
+  font-size: 10px;
+  color: #666;
+}
+
+.tooltipContent {
+  font-size: 11px;
+  line-height: 1;
+  padding: 4px 8px;
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  color: #4b5563;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.tooltipArrow {
+  fill: #f3f4f6;
+}
+
+.ratingContainer {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.ratingHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 5px;
-  padding: 0 10px;
+  margin-bottom: 5px;
 }
 
-.filterDateSubmit {
-  padding: 5px 10px;
-  margin-left: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-family: 'Poppins', sans-serif;
-}
-
-.filterDateSubmit:hover {
-  background-color: #4b8acf;
-  transform: translateY(2px);
-}
-
-.clsAndRatings {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
-
-.clsContainer {
-  display: flex;
-  flex-direction: column;
-  flex:1;
-}
-
-.ratingsContainerDiv {
-  display: flex;
-  flex-direction: column;
-  width: max-content;
-}
-
-.ratingsContainer {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  width: 350px;
-  margin-left: 10px;
-}
-
-.ratingGauge {
-  width: 175px;
-  height: 150px;
-}
-
-.ratingDiv {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.ratingHeading {
-  align-self: center;
-  margin: 0;
-  padding: 0;
-  font-size: 15px;
-}
-
-/* Container for all web vitals content */
-.chartContainer {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  margin: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Container for CLS chart and ratings */
-.clsAndRatings {
-  display: flex;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-/* Outer container for ratings section */
-.ratingContainerDiv {
-  flex: 1;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  min-width: 300px;
-}
-
-/* Grid layout for individual rating components */
-.ratingsContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  width: 100%;
-}
-
-/* Individual rating component styling */
-.ratingDiv {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 15px;
-  background: #f8f9fa;
-  border-radius: 8px;
-}
-
-/* Rating heading style */
-.ratingHeading {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: #333;
-}
-
-/* Rating bar container */
-.ratingBar {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-/* Status text styling */
 .statusText {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   font-weight: 500;
-  margin-top: 4px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .clsAndRatings {
-    flex-direction: column;
-  }
-
-  .ratingsContainer {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  }
-
-  .ratingContainerDiv {
-    min-width: unset;
-  }
 }

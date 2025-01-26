@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import Rating from './Rating';
+import React, { useState, useEffect } from 'react';
 import styles from '../dashboard.module.css';
+import GaugeChart from 'react-gauge-chart';
+import Rating from './Rating';
 
 const WebVitalRatings = ({ data }) => {
     console.log('DATA FROM WEB VITAL RATINGS: ', data);
@@ -41,44 +42,59 @@ const WebVitalRatings = ({ data }) => {
     }
   };
 
-    // Helper function to calculate average for a specific metric type
-    const calculateAverage = (data, metricType) => {
-        const metrics = data.filter(item => item.metricType === metricType);
-        if (metrics.length === 0) return null;
-        
-        const sum = metrics.reduce((acc, curr) => acc + curr.metricValue, 0);
-        return sum / metrics.length;
-    };
+  const calculateRating = (value, metric) => {
+    const ranges = metricsConfig[metric];
+    const [goodMin, goodMax] = ranges.good;
+    const [needsImprovementMin, needsImprovementMax] = ranges.needsImprovement;
+    
+    let status;
+    if (value <= goodMax) {
+      status = 'Great!';
+    } else if (value <= needsImprovementMax) {
+      status = 'Needs Improvement';
+    } else {
+      status = 'Poor';
+    }
 
-    useEffect(() => {
-        const averages = data?.length 
-            ? Object.keys(metricsConfig).reduce((acc, metric) => ({
-                ...acc,
-                [metric]: calculateAverage(data, metric)
-            }), {})
-        : {};
+    return { status };
+  };
 
-        const ratings = Object.entries(metricsConfig).map(([metricType, ranges]) => (
-            <Rating
-                key={metricType}
-                metricType={metricType}
-                goodRange={ranges.good}
-                needsImprovementRange={ranges.needsImprovement}
-                poorRange={ranges.poor}
-                currentValue={averages[metricType]}
-            />
-        ));
+  useEffect(() => {
+    if (!data || !data.length) return;
 
-        setVitalRatings(ratings);
-    }, [data]);
+    const metricGroups = data.reduce((acc, item) => {
+      if (!acc[item.metricType]) {
+        acc[item.metricType] = [];
+      }
+      acc[item.metricType].push(item.metricValue);
+      return acc;
+    }, {});
 
-    return (
-        <div className={styles.ratingContainerDiv}>
-            <div className={styles.ratingsContainer}>
-                {vitalRatings}
-            </div>
-        </div>
-    );
+    const processedData = Object.entries(metricGroups).map(([metric, values]) => {
+      const avgValue = values.reduce((sum, val) => sum + val, 0) / values.length;
+      return {
+        metric,
+        value: avgValue
+      };
+    });
+
+    setVitalRatings(processedData);
+  }, [data]);
+
+  return (
+    <>
+      {vitalRatings.map((rating, index) => (
+        <Rating
+          key={index}
+          metricType={rating.metric}
+          currentValue={rating.value}
+          goodRange={metricsConfig[rating.metric].good}
+          needsImprovementRange={metricsConfig[rating.metric].needsImprovement}
+          poorRange={metricsConfig[rating.metric].poor}
+        />
+      ))}
+    </>
+  );
 };
 
 export default WebVitalRatings;

@@ -1,36 +1,13 @@
 import React from "react";
 import * as TooltipPrimitives from "@radix-ui/react-tooltip";
-import { cx } from "../../lib/utils/cx";  // Ensure this utility function exists
+import { cx } from "../../lib/utils/cx";
 
 const Tooltip = React.forwardRef(
-  (
-    {
-      children,
-      className,
-      content,
-      delayDuration,
-      defaultOpen,
-      open,
-      onClick,
-      onOpenChange,
-      showArrow = true,
-      side,
-      sideOffset = 10,
-      asChild,
-      ...props
-    },
-    forwardedRef
-  ) => {
+  ({ children, content, side = "top", sideOffset = 4, ...props }, forwardedRef) => {
     return (
-      <TooltipPrimitives.Provider delayDuration={150}>
-        <TooltipPrimitives.Root
-          open={open}
-          defaultOpen={defaultOpen}
-          onOpenChange={onOpenChange}
-          delayDuration={delayDuration}
-          tremor-id="tremor-raw"
-        >
-          <TooltipPrimitives.Trigger onClick={onClick} asChild={asChild}>
+      <TooltipPrimitives.Provider>
+        <TooltipPrimitives.Root>
+          <TooltipPrimitives.Trigger asChild>
             {children}
           </TooltipPrimitives.Trigger>
           <TooltipPrimitives.Portal>
@@ -39,25 +16,11 @@ const Tooltip = React.forwardRef(
               side={side}
               sideOffset={sideOffset}
               align="center"
-              className={cx(
-                "max-w-60 select-none rounded-md px-2.5 py-1.5 text-sm leading-5 shadow-md",
-                "text-gray-50 dark:text-gray-900",
-                "bg-gray-900 dark:bg-gray-50",
-                "will-change-[transform,opacity]",
-                "data-[side=bottom]:animate-slideDownAndFade data-[side=left]:animate-slideLeftAndFade data-[side=right]:animate-slideRightAndFade data-[side=top]:animate-slideUpAndFade data-[state=closed]:animate-hide",
-                className
-              )}
+              className="max-w-60 select-none rounded-md px-2.5 py-1.5 text-sm leading-5 shadow-md text-gray-50 bg-gray-900 will-change-[transform,opacity]"
               {...props}
             >
               {content}
-              {showArrow ? (
-                <TooltipPrimitives.Arrow
-                  className="border-none fill-gray-900 dark:fill-gray-50"
-                  width={12}
-                  height={7}
-                  aria-hidden="true"
-                />
-              ) : null}
+              <TooltipPrimitives.Arrow className="fill-gray-900" width={8} height={4} />
             </TooltipPrimitives.Content>
           </TooltipPrimitives.Portal>
         </TooltipPrimitives.Root>

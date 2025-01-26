@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import './login.css';
+import styles from './login.css';
 import { FaCircleUser } from 'react-icons/fa6';
 import { Si1Password } from 'react-icons/si';
 import { AiOutlineGoogle } from 'react-icons/ai';
@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { signIn, useSession } from 'next-auth/react';
 import Spinner from '../components/Spinner.js';
 import Image from 'next/image';
+import logo from '/public/TransparentIcon.png';
 
 export default function Login({ initialLoading = true }) {  //added prop for testing purposes
   const { data: session, status } = useSession();
@@ -59,26 +60,38 @@ export default function Login({ initialLoading = true }) {  //added prop for tes
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Show preloader
-    // console.log("Submitting login form with username:", username);
+    setLoading(true);
 
-    const result = await signIn('credentials', {
-      redirect: false,
-      username,
-      password,
-    });
+    try {
+      // Direct authentication instead of using NextAuth
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
 
-    setLoading(false); // Hide preloader
+      const data = await response.json();
 
-    if (result?.error) {
-      console.log('Login error:', result.error);
-      setError(result.error);
-    } else {
-      console.log('Login successful');
-      setError('');
-      setUsername('');
-      setPassword('');
-      window.location.href = `/dashboard/?username=${username}`;
+      if (response.ok) {
+        console.log('Login successful');
+        setError('');
+        setUsername('');
+        setPassword('');
+        window.location.href = `/dashboard/?username=${encodeURIComponent(username)}`;
+      } else {
+        console.log('Login error:', data.message);
+        setError(data.message);
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('An error occurred during login');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -108,12 +121,22 @@ export default function Login({ initialLoading = true }) {  //added prop for tes
   }
 
   return (
-    <div className="wrapper">
+    <div className={styles.wrapper}>
+      <div className={styles['header-container']}>
+        <h1>NextLevel</h1>
+        <Image 
+          src={logo}
+          alt="NextLevel Logo" 
+          priority={true}
+          width={100}
+          height={100}
+          style={{ 
+            objectFit: 'contain',
+            background: 'transparent'
+          }}
+        />
+      </div>
       <form onSubmit={handleSubmit}>
-        <div className="logo-container">
-          <Image src="/TransparentIcon.png" alt="Logo" className="logo" width={250} height={350} />
-          <h1>NextLevel</h1>
-        </div>
         <div className="input-box">
           <input
             type="text"

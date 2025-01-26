@@ -19,7 +19,14 @@ function TopNav() {
       <nav className={styles.nav}>
         <div className={styles.logo}>
           <Link href="/">
-            <Image src={logo} alt="logo" height={40} />
+            <Image 
+              src={logo} 
+              alt="logo" 
+              height={40} 
+              width={160}
+              priority 
+              className={styles.logoImage}
+            />
           </Link>
         </div>
         <div className={styles.links}>

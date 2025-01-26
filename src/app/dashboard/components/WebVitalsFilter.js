@@ -7,29 +7,33 @@ const WebVitalsFilter = ({ onSubmit }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // call the onUpdate function passed as a prop with the new start and end dates
-    onSubmit(startDate, endDate);
-  };
-
-  const handleStartDateChange = (event) => {
-      setStartDate(event.target.value);
-  };
-
-  const handleEndDateChange = (event) => {
-      setEndDate(event.target.value);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit({ 
+      startDate, 
+      endDate 
+    });
   };
 
   return (
-      <div>
-          <form className={styles.webVitalsFilter} onSubmit={handleSubmit}>
-              <input type='datetime-local' id='start' name='start' className={styles.dateFilter} value={startDate} onChange={handleStartDateChange} required />
-              <input type='datetime-local' id='end' name='end' className={styles.dateFilter} value={endDate} onChange={handleEndDateChange} required />
-              <button type='submit' className={styles.filterDateSubmit}>Filter</button>
-          </form>
-      </div>
+    <form onSubmit={handleSubmit} className={styles.filterContainer}>
+      <input
+        type="datetime-local"
+        value={startDate}
+        onChange={(e) => setStartDate(e.target.value)}
+        className={styles.dateInput}
+      />
+      <input
+        type="datetime-local"
+        value={endDate}
+        onChange={(e) => setEndDate(e.target.value)}
+        className={styles.dateInput}
+      />
+      <button type="submit" className={styles.filterButton}>
+        Filter
+      </button>
+    </form>
   );
-}
+};
 
 export default WebVitalsFilter;

@@ -59,6 +59,8 @@ function CLSChart({ clsData }) {
         title: {
           display: true,
           text: 'Date/Time',
+          align: 'center',
+          padding: { top: 10 }
         },
       },
       y: {
@@ -91,10 +93,12 @@ function CLSChart({ clsData }) {
 
   return (
     <div className={styles.clsContainer}>
-      <div>
+      <div className={styles.clsChartWrapper}>
         <Line data={chartData} options={options} ref={chartRef} />
       </div>
-      <button onClick={downloadChart} id={styles.downloadCLS} className={styles.downloadButton}>Download</button>
+      <button onClick={downloadChart} className={styles.downloadButton}>
+        Download
+      </button>
     </div>
   );
 }

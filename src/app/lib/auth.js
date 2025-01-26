@@ -6,10 +6,22 @@ export async function verifyCredentials(username, password) {
   // console.log('Connecting to database');
   await dbConnect();
   // console.log('Finding user by username:', username);
-  const user = await User.findOne({ username });
+  
+  // Try to find user by username or email
+  const user = await User.findOne({
+    $or: [
+      { username: username },
+      { email: username }
+    ]
+  });
 
   if (!user) {
     console.log('User not found');
+    return null;
+  }
+
+  if (!user.password) {
+    console.log('User has no password set (OAuth user)');
     return null;
   }
 
@@ -22,9 +34,10 @@ export async function verifyCredentials(username, password) {
 
   console.log('Password is valid');
   return {
-    id: user._id,
-    name: user.name,
+    id: user._id.toString(),
+    name: user.username,
     email: user.email,
     username: user.username,
+    APIkey: user.APIkey
   };
 }

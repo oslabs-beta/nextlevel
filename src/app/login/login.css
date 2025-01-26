@@ -1,16 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
 
-:global .login * {
+.login * {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  height: 100%;
-  background-color: hsl(240, 7%, 8%);
   box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: hsl(240, 7%, 8%);
 }
+
 .body-login {
   font-family: 'Poppins', sans-serif;
   display: flex;
@@ -31,14 +28,53 @@
   color: #fff;
   border-radius: 10px;
   padding: 30px 40px;
-  box-shadow: 0 0px 10px rgba(255, 255, 255, 0.308);
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.logo-container {
+.header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0;
+  background: transparent;
+  width: 100%;
+}
+
+.header-container h1 {
+  font-size: 48px;
+  background: transparent;
+  text-align: center;
+  margin: 0;
+}
+
+.header-container img {
+  width: 100px !important;
+  height: 100px !important;
+  background: transparent;
+  object-fit: contain;
+}
+
+.logo-group {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px; /* Adjust as needed */
+  background: transparent;
+}
+
+.logo-group h1 {
+  font-size: 36px;
+  background: transparent;
+  height: auto;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.logo-group img {
+  background: transparent;
 }
 
 .logo {

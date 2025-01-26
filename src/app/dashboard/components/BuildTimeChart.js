@@ -51,11 +51,15 @@ function BuildTimeChart({ username }) {
 
   // Only attempt to map if buildTimeData is not empty
   const chartData = {
-    labels: (buildTimeData || []).map(entry => new Date(entry.buildDate)),
+    labels: (buildTimeData || [])
+      .filter(entry => entry.buildDate && entry.buildDate > 0)
+      .map(entry => new Date(entry.buildDate)),
     datasets: [
       {
         label: 'Build Time',
-        data: (buildTimeData || []).map(entry => entry.buildTime),
+        data: (buildTimeData || [])
+          .filter(entry => entry.buildDate && entry.buildDate > 0)
+          .map(entry => entry.buildTime),
         fill: false,
         borderColor: 'rgb(75, 192, 192)',
         tension: 0.1,
@@ -68,11 +72,15 @@ function BuildTimeChart({ username }) {
       x: {
         type: 'time',
         time: {
-          unit: 'minute',
-          tooltipFormat: 'MMM dd, yyyy HH:mm', // Format the tooltip
+          unit: 'hour',
+          tooltipFormat: 'MMM dd, yyyy HH:mm',
           displayFormats: {
-            minute: 'MMM dd, yyyy HH:mm', // Format for the x-axis labels
+            hour: 'MMM dd, HH:mm'
           },
+        },
+        ticks: {
+          maxTicksLimit: 10,
+          source: 'auto',
         },
         title: {
           display: true,
@@ -117,7 +125,9 @@ function BuildTimeChart({ username }) {
       <div className={styles.buildTimeChart}>
         <Line data={chartData} options={options} ref={chartRef}/>
       </div>
-      <button onClick={downloadChart} id={styles.downloadBuildTime} className={styles.downloadButton}>Download</button>
+      <button onClick={downloadChart} className={styles.downloadButton}>
+        Download
+      </button>
     </div>
   );
 }

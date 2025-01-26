@@ -33,18 +33,25 @@ function BundleLog({username}) {
   // }, []);
 
   useEffect(() => {
-    // Fetch the bundle logs asynchronously
+    let mounted = true;
+    
     const fetchLogs = async () => {
       try {
         const logs = await useBundleData(username);
-        setBundleLogs(logs);  // Set the fetched bundle logs
+        if (mounted) {
+          setBundleLogs(logs);
+        }
       } catch (error) {
         console.error('Error fetching bundle log:', error);
       }
     };
 
     fetchLogs();
-  }, [username]); // This effect will run when the username changes
+    
+    return () => {
+      mounted = false;
+    };
+  }, [username]);
 
   // useEffect(() => {
   //   const logsLength = bundleLogs.length;

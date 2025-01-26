@@ -1,4 +1,3 @@
-
 .container {
   border-radius: 8px;
   margin-bottom: 1rem;
@@ -23,15 +22,16 @@
 }
 
 .copyButton {
-  background-color: #0070f3;
+  padding: 8px 16px;
+  background-color: #4a90e2;
   color: white;
   border: none;
-  padding: 0.3em 0.6em;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.8em;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
 }
 
 .copyButton:hover {
-  background-color: #005bb5;
+  background-color: #357abd;
 }

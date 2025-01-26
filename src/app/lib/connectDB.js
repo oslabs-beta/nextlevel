@@ -1,38 +1,23 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI;
-if (!MONGODB_URI) {
-    throw new Error('Please define the MONGODB_URI environment variable inside .env');
-}
-
-let cached = global.mongoose;
-
-if (!cached) {
-    cached = global.mongoose = { conn: null, promise: null };
-}
-
-async function dbConnect() {
-    if (cached.conn) {
-        return cached.conn;
-    }
-    if (!cached.promise) {
-        const opts = {
-            bufferCommands: false,
-        };
-        cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-            console.log('Database Connected');
-            return mongoose;
-        });
-    }
-    try {
-        cached.conn = await cached.promise;
-    } catch (e) {
-        cached.promise = null;
-        throw e;
+const dbConnect = async () => {
+  try {
+    if (mongoose.connection.readyState >= 1) {
+      console.log('Using existing database connection');
+      console.log('Connected to database:', mongoose.connection.db.databaseName);
+      console.log('Host:', mongoose.connection.host);
+      return;
     }
 
-    return cached.conn;
-}
+    console.log('Creating new database connection to:', process.env.MONGODB_URI);
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('Database connected successfully to:', mongoose.connection.db.databaseName);
+    console.log('Host:', mongoose.connection.host);
+  } catch (error) {
+    console.error('Database connection error:', error);
+    throw error;
+  }
+};
 
-module.exports = dbConnect;
+export default dbConnect;
 

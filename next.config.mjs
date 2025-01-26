@@ -8,7 +8,11 @@ const withBundleAnalyzer = pkg({
 const nextConfig = {
   experimental: {
     instrumentationHook: true,
-  },  
+  },
+  swcMinify: true,
+  compiler: {
+    styledComponents: true,
+  },
   async rewrites() {
     return [
       {

@@ -64,13 +64,28 @@ function WebVitalsContainer({ username}) {
         <h2 className={styles.chartTitle}>Web Vitals</h2>
         <WebVitalsFilter onSubmit={onSubmit} />
       </div>
-      {/* Show charts with real data after fetching */}
-      <div>
+      
+      {/* Web Vitals Chart */}
+      <div className={styles.webVitalsSection}>
         <WebVitalsChart webVitalsData={webVitalsData.length > 0 ? webVitalsData : [{value: 0}]}/>
       </div>
-      <div className={styles.clsAndRatings}>
+      
+      {/* CLS Chart */}
+      <div className={styles.clsSection}>
         <CLSChart clsData={clsData}/>
-        <WebVitalRatings data={webVitalsData.length > 0 ? webVitalsData : []}/>
+      </div>
+      
+      {/* Category Bar Charts */}
+      <div className={styles.ratingsSection}>
+        <div className={styles.ratingsRow}>
+          <WebVitalRatings data={webVitalsData.filter(d => d.metricType === 'FCP' || d.metricType === 'TTFB')} />
+        </div>
+        <div className={styles.ratingsRow}>
+          <WebVitalRatings data={webVitalsData.filter(d => d.metricType === 'LCP' || d.metricType === 'FID')} />
+        </div>
+        <div className={styles.ratingsRow}>
+          <WebVitalRatings data={webVitalsData.filter(d => d.metricType === 'INP')} className={styles.centerSingle} />
+        </div>
       </div>
     </div>
   );

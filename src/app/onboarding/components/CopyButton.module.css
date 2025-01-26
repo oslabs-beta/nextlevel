@@ -1,3 +1,9 @@
+.apiContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .copyButton {
   padding: 10px 20px;
   background-color: #224e69;

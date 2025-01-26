@@ -5,6 +5,7 @@ import styles from '../dashboard.module.css';
 
 const Rating = ({ goodRange, needsImprovementRange, poorRange, metricType, currentValue }) => {
   const maxValue = poorRange[1];
+  const roundedValue = Number(currentValue).toFixed(2);
   
   const rangeValues = [
     goodRange[1],                              // Good range
@@ -20,11 +21,10 @@ const Rating = ({ goodRange, needsImprovementRange, poorRange, metricType, curre
           values={rangeValues}
           marker={currentValue ? {
             value: currentValue,
-            tooltip: metricType !== 'CLS' ? `${currentValue} ms` : currentValue.toString(),
+            tooltip: `${roundedValue} ms`,
             showAnimation: true
           } : undefined}
           colors={["emerald", "amber", "pink"]}
-          maxValue={maxValue}
           className="mx-auto max-w-sm"
         />
         <div className={styles.statusText}>

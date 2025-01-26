@@ -8,7 +8,7 @@ function BuildTimeContainer({ username }) {
     <div className={styles.chartContainer}>
       <h2 className={styles.chartTitle}>Build Time</h2>
       <div className={styles.buildCharts}>
-        <BuildTimeChart className={styles.buildTimeDiv} username={username}/>
+        <BuildTimeChart username={username}/>
         <BundleLog username={username}/>
       </div>
     </div>
